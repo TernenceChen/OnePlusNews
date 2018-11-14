@@ -6,6 +6,7 @@ public class HistoryBean {
     private String history_author_name;
     private String history_date;
     private String history_url;
+    private long history_time;
 
     public String getHistory_title() {
         return history_title;
@@ -23,6 +24,10 @@ public class HistoryBean {
         return history_url;
     }
 
+    public long getHistory_time() {
+        return history_time;
+    }
+
     public void setHistory_title(String history_title) {
         this.history_title = history_title;
     }
@@ -37,5 +42,9 @@ public class HistoryBean {
 
     public void setHistory_url(String history_url) {
         this.history_url = history_url;
+    }
+
+    public void setHistory_time(long history_time) {
+        this.history_time = history_time;
     }
 }

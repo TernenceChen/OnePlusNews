@@ -28,7 +28,9 @@ import com.github.promeg.pinyinhelper.Pinyin;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class BaseFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
@@ -177,8 +179,9 @@ public class BaseFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             NewsListNormalBean.ResultBean.DataBean newsListNormalBean = mNewsListNormalBeanList.get(position);
             Intent intent;
             HistoryBean historyBean = new HistoryBean();
-            String uniquekey = newsListNormalBean.getUniquekey();
             String url = newsListNormalBean.getUrl();
+            long time = getNowTime();
+            historyBean.setHistory_time(time);
             String title = newsListNormalBean.getTitle();
             historyBean.setHistory_title(title);
             String author_name = newsListNormalBean.getAuthor_name();
@@ -206,5 +209,15 @@ public class BaseFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 swipeRefreshLayout.setRefreshing(false);
             }
         }, 1000);
+    }
+
+    public long getNowTime(){
+        long time;
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH) + 1;
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        time = day + month * 100 + year * 10000;
+        return time;
     }
 }

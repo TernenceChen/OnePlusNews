@@ -8,10 +8,10 @@ public class NewsHelper extends SQLiteOpenHelper {
 
     public static final String CREATE_NEWS = "create table History ("
             + "url text primary key, "
-            + "lastDate date , "
             + "title text, "
             + "author_name text, "
-            + "date text)";
+            + "date text, "
+            + "time long)";
 
     private Context mContext;
 

@@ -105,6 +105,6 @@ public class HistoryRecordFragment extends Fragment {
     }
 
     public void updateTable(){
-
+        
     }
 }

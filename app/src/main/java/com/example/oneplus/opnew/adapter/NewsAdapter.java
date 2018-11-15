@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.oneplus.opnew.R;
 import com.example.oneplus.opnew.bean.NewsListNormalBean;
-import com.example.oneplus.opnew.util.HttpUtils;
 
 import java.util.ArrayList;
 

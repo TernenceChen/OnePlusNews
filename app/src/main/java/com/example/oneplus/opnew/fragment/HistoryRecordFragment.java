@@ -103,8 +103,4 @@ public class HistoryRecordFragment extends Fragment {
         }
         isFirstLoading = false;
     }
-
-    public void updateTable(){
-        
-    }
 }

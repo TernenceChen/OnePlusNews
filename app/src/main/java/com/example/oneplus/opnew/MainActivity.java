@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void updateTable(){
         long time = getLastTime();
-
+        newsHelper.getWritableDatabase().delete("History",time + ">=?",new String[]{"time"});
     }
 
     public long getLastTime(){

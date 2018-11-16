@@ -8,8 +8,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:background="#ffffff">
+        android:gravity="center">
         <TextView
             android:id="@+id/view_text"
             android:layout_width="match_parent"
@@ -18,7 +17,7 @@
             android:layout_toLeftOf="@id/news_image"
             android:layout_marginBottom="15dp"
             android:textColor="#000"
-            android:textSize="16sp"
+            android:textSize="16dp"
             tools:text="item"/>
         <TextView
             android:id="@+id/author_name_view"
@@ -29,7 +28,7 @@
             android:layout_marginRight="70dp"
             android:text="author_name"
             android:textColor="#000"
-            android:textSize="12sp"/>
+            android:textSize="12dp"/>
         <TextView
             android:id="@+id/date_view"
             android:layout_width="wrap_content"
@@ -38,7 +37,7 @@
             android:layout_below="@id/view_text"
             android:layout_toRightOf="@id/author_name_view"
             android:textColor="#000"
-            android:textSize="12sp"/>
+            android:textSize="12dp"/>
         <ImageView
             android:id="@+id/news_image"
             android:layout_width="wrap_content"

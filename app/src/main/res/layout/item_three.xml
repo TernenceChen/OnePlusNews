@@ -8,7 +8,6 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:background="#fff"
         android:gravity="center"
         android:layout_height="wrap_content">
             <TextView
@@ -18,7 +17,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginLeft="10dp"
                 android:textColor="#000"
-                android:textSize="16sp"
+                android:textSize="16dp"
                 tools:text="item"/>
             <TextView
                 android:id="@+id/author_name_view_three"
@@ -28,7 +27,7 @@
                 android:layout_marginLeft="10dp"
                 android:text="author_name"
                 android:textColor="#000"
-                android:textSize="12sp"/>
+                android:textSize="12dp"/>
             <TextView
                 android:id="@+id/date_view_three"
                 android:layout_width="wrap_content"
@@ -38,7 +37,7 @@
                 android:layout_marginLeft="70dp"
                 android:text="date"
                 android:textColor="#000"
-                android:textSize="12sp"/>
+                android:textSize="12dp"/>
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -51,23 +50,20 @@
                     android:layout_height="90dp"
                     android:scaleType="fitXY"
                     android:paddingRight="10dp"
-                    android:layout_toLeftOf="@id/news_image2"
-                    android:src="@color/colorWhite"/>
+                    android:layout_toLeftOf="@id/news_image2"/>
                 <ImageView
                     android:id="@+id/news_image2"
                     android:layout_width="wrap_content"
                     android:layout_height="90dp"
                     android:layout_centerInParent="true"
-                    android:scaleType="fitXY"
-                    android:src="@color/colorLove"/>
+                    android:scaleType="fitXY"/>
                 <ImageView
                     android:id="@+id/news_image3"
                     android:layout_width="wrap_content"
                     android:layout_height="90dp"
                     android:paddingLeft="10dp"
                     android:layout_toRightOf="@id/news_image2"
-                    android:scaleType="fitXY"
-                    android:src="@color/colorComment"/>
+                    android:scaleType="fitXY"/>
             </RelativeLayout>
     </RelativeLayout>
 </RelativeLayout>

@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.oneplus.opnew.R;
 import com.example.oneplus.opnew.bean.NewsListNormalBean;
 
@@ -148,7 +149,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private void setNetPicture(String url, ImageView imageView){
         Glide.with(context)
                 .load(url)
-                .crossFade()
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(imageView);
     }
 

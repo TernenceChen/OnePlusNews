@@ -34,7 +34,6 @@ public class HomePagerFragment extends Fragment implements SharedPreferences.OnS
     private Toolbar toolbar;
     private SharedPreferences sps;
     boolean isDelete;
-    private FragmentManager fm;
     boolean isAdd;
     Label label;
 

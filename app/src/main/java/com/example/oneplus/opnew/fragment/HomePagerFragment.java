@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.oneplus.opnew.R;
+import com.example.oneplus.opnew.SharedPreferencesManager;
 import com.example.oneplus.opnew.bean.Label;
 
 import java.util.ArrayList;
@@ -25,64 +26,73 @@ import java.util.List;
 
 public class HomePagerFragment extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-    private TabLayout tabLayout;
-    private MyTabAdapter adapter;
-    private ViewPager viewPager;
+    private final String key1 = "key1";
+    private final String key2 = "key2";
+    private final String key3 = "key3";
+    private final String key4 = "key4";
+    private String table_military = "军事";
+    private String table_technology = "科技";
+    private String table_finance = "财经";
+    private String table_fashion = "时尚";
+    private TabLayout mTabLayout;
+    private ViewPager mViewPager;
     private List<String> listStr = new ArrayList<>();
     private View view;
-    private List<Fragment> fragments;
-    private Toolbar toolbar;
-    private SharedPreferences sps;
+    private MyTabAdapter myTabAdapter;
+    private List<Fragment> mFragmentLists;
+    private Toolbar mToolbar;
+    private SharedPreferences mSharedPreferences;
+    private SharedPreferencesManager mSharedPreferencesManager = new SharedPreferencesManager();
     boolean isDelete;
     boolean isAdd;
-    Label label;
+    private Label mLabel;
 
-    SharedPreferences.OnSharedPreferenceChangeListener mListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+
+    final SharedPreferences.OnSharedPreferenceChangeListener mListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
             Log.i("HomePagerFragment", "onSharedPreferenceChanged key = " + key);
 
             String keyText = "";
             boolean keyValue = false;
-
             switch (key) {
-                case "key1":
-                    keyText = "军事";
-                    keyValue = sps.getBoolean("key1",false);
+                case key1:
+                    keyText = table_military;
+                    keyValue = mSharedPreferencesManager.addTable(mSharedPreferences,key1);
                     break;
-                case "key2":
-                    keyText = "科技";
-                    keyValue = sps.getBoolean("key2",false);
+                case key2:
+                    keyText = table_technology;
+                    keyValue = mSharedPreferencesManager.addTable(mSharedPreferences,key2);
                     break;
-                case "key3":
-                    keyText = "财经";
-                    keyValue = sps.getBoolean("key3",false);
+                case key3:
+                    keyText = table_finance;
+                    keyValue = mSharedPreferencesManager.addTable(mSharedPreferences,key3);
                     break;
-                case "key4":
-                    keyText = "时尚";
-                    keyValue = sps.getBoolean("key4",false);
+                case key4:
+                    keyText = table_fashion;
+                    keyValue = mSharedPreferencesManager.addTable(mSharedPreferences,key4);
                     break;
             }
             if (keyValue) {
                 listStr.add(keyText);
-                fragments.add(BaseFragment.newInstance(keyText));
-                adapter.updateData(listStr);
+                mFragmentLists.add(BaseFragment.newInstance(keyText));
+                myTabAdapter.updateData(listStr);
                 isAdd = true;
             } else {
                 listStr.remove(keyText);
-                fragments.remove(BaseFragment.newInstance(keyText));
-                adapter.updateData(listStr);
+                mFragmentLists.remove(BaseFragment.newInstance(keyText));
+                myTabAdapter.updateData(listStr);
                 isDelete = true;
             }
             Log.i("HomePagerFragment log", "listStr size = " + listStr.size());
-            Log.i("HomePagerFragment log","position = " + listStr);
-            if (listStr.size() <= 6){
-                tabLayout.setTabMode(TabLayout.MODE_FIXED);
-            }else {
-                tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+            Log.i("HomePagerFragment log", "position = " + listStr);
+            if (listStr.size() <= 6) {
+                mTabLayout.setTabMode(TabLayout.MODE_FIXED);
+            } else {
+                mTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
             }
-            adapter.notifyDataSetChanged();
-            viewPager.setAdapter(adapter);
+            myTabAdapter.notifyDataSetChanged();
+            mViewPager.setAdapter(myTabAdapter);
 
         }
     };
@@ -90,14 +100,13 @@ public class HomePagerFragment extends Fragment implements SharedPreferences.OnS
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.firstfrag_layout,container,false);
-        tabLayout = view.findViewById(R.id.tl_tab);
-        toolbar = view.findViewById(R.id.toolbar_news);
-        viewPager = view.findViewById(R.id.view_pager);
-        sps = getActivity().getSharedPreferences("com.example.oneplus.opnew_preferences",Context.MODE_PRIVATE);
-        label = new Label();
-        listStr = label.getListStr();
-        String title = "首页";
-        initToolbar(toolbar,title);
+        mTabLayout = view.findViewById(R.id.tl_tab);
+        mToolbar = view.findViewById(R.id.toolbar_news);
+        mViewPager = view.findViewById(R.id.view_pager);
+        mSharedPreferences = getActivity().getSharedPreferences("com.example.oneplus.opnew_preferences",Context.MODE_PRIVATE);
+        mLabel = new Label();
+        listStr = mLabel.getListStr();
+        initToolbar(mToolbar,getResources().getString(R.string.main_tab_name));
         initViews();
         return view;
     }
@@ -105,16 +114,16 @@ public class HomePagerFragment extends Fragment implements SharedPreferences.OnS
     @Override
     public void onStart() {
         super.onStart();
-        sps.registerOnSharedPreferenceChangeListener(mListener);
+        mSharedPreferences.registerOnSharedPreferenceChangeListener(mListener);
     }
 
     public void onResume() {
         super.onResume();
-        sps.registerOnSharedPreferenceChangeListener(mListener);
+        mSharedPreferences.registerOnSharedPreferenceChangeListener(mListener);
     }
 
     public void onPause(){
-        sps.unregisterOnSharedPreferenceChangeListener(mListener);
+        mSharedPreferences.unregisterOnSharedPreferenceChangeListener(mListener);
         super.onPause();
     }
 
@@ -128,39 +137,39 @@ public class HomePagerFragment extends Fragment implements SharedPreferences.OnS
     }
 
     private void initViews(){
-        boolean key1 = sps.getBoolean("key1",false);
-        boolean key2 = sps.getBoolean("key2",false);
-        boolean key3 = sps.getBoolean("key3",false);
-        boolean key4 = sps.getBoolean("key4",false);
-        if (key1 == true){
-            listStr.add("军事");
+        boolean add_key1 = mSharedPreferencesManager.addTable(mSharedPreferences,key1);
+        boolean add_key2 = mSharedPreferencesManager.addTable(mSharedPreferences,key2);
+        boolean add_key3 = mSharedPreferencesManager.addTable(mSharedPreferences,key3);
+        boolean add_key4 = mSharedPreferencesManager.addTable(mSharedPreferences,key4);
+        if (add_key1 == true){
+            listStr.add(table_military);
         }
-        if (key2 == true){
-            listStr.add("科技");
+        if (add_key2 == true){
+            listStr.add(table_technology);
         }
-        if (key3 == true){
-            listStr.add("财经");
+        if (add_key3 == true){
+            listStr.add(table_finance);
         }
-        if (key4 == true){
-            listStr.add("时尚");
+        if (add_key4 == true){
+            listStr.add(table_fashion);
         }
-        fragments = new ArrayList<>();
+        mFragmentLists = new ArrayList<>();
         for(int i = 0; i < listStr.size(); i++){
-            fragments.add(BaseFragment.newInstance(listStr.get(i)));
+            mFragmentLists.add(BaseFragment.newInstance(listStr.get(i)));
         }
-        adapter = new MyTabAdapter(getChildFragmentManager(),fragments);
-        viewPager.setAdapter(adapter);
-        tabLayout.setupWithViewPager(viewPager);
-        if (fragments.size() <= 6){
-            tabLayout.setTabMode(TabLayout.MODE_FIXED);
+        myTabAdapter = new MyTabAdapter(getChildFragmentManager(),mFragmentLists);
+        mViewPager.setAdapter(myTabAdapter);
+        mTabLayout.setupWithViewPager(mViewPager);
+        if (mFragmentLists.size() <= 6){
+            mTabLayout.setTabMode(TabLayout.MODE_FIXED);
         }else {
-            tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+            mTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         }
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
+        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
+                mViewPager.setCurrentItem(tab.getPosition());
             }
 
             @Override
@@ -179,7 +188,6 @@ public class HomePagerFragment extends Fragment implements SharedPreferences.OnS
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 
     }
-
     class MyTabAdapter extends FragmentStatePagerAdapter {
 
         private List<Fragment> fragments;
@@ -221,5 +229,4 @@ public class HomePagerFragment extends Fragment implements SharedPreferences.OnS
             return listStr.get(position);
         }
     }
-
 }

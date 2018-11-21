@@ -17,7 +17,7 @@ public class NewsHelper extends SQLiteOpenHelper {
 
     public NewsHelper(Context context,String name,SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
-        mContext = context;
+        this.mContext = context;
     }
 
     @Override

@@ -15,15 +15,14 @@ import com.example.oneplus.opnew.R;
 
 public class AddFragment extends Fragment {
 
-    public Toolbar toolbar;
+    public Toolbar mToolbar;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.thirdfrag_layout,container,false);
-        toolbar = view.findViewById(R.id.toolbar_add);
-        String title = "添加";
-        initToolbar(toolbar,title);
+        mToolbar = view.findViewById(R.id.toolbar_add);
+        initToolbar(mToolbar,getResources().getString(R.string.addLabel_tab_name));
         return view;
     }
 

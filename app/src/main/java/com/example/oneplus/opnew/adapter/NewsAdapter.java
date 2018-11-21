@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private Context context;
+    private Context mContext;
     public static final int TYPE_RIGHT_IMAGE = 0;
     public static final int TYPE_THREE_IMAGE = 1;
     private OnItemClickListener mOnItemClickListener;
@@ -34,7 +34,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     public NewsAdapter (Context context, ArrayList<NewsListNormalBean.ResultBean.DataBean> mNewsListNormalBeanList){
-        this.context = context;
+        this.mContext = context;
         this.mNewsListNormalBeanList = mNewsListNormalBeanList;
     }
 
@@ -147,9 +147,9 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     private void setNetPicture(String url, ImageView imageView){
-        Glide.with(context)
+        Glide.with(mContext)
                 .load(url)
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .diskCacheStrategy(DiskCacheStrategy.RESULT)
                 .into(imageView);
     }
 

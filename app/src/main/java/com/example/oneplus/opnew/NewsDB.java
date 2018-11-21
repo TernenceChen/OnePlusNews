@@ -36,13 +36,14 @@ public class NewsDB {
             values.put("author_name",historyBean.getHistory_author_name());
             values.put("date",historyBean.getHistory_date());
             values.put("url",historyBean.getHistory_url());
+            values.put("time",historyBean.getHistory_time());
             db.insert("History",null,values);
         }
     }
 
     public List<HistoryBean> historyBeanList (){
         List<HistoryBean> list = new ArrayList<>();
-        Cursor cursor = db.query("History",null,null,null,null,null,null);
+        Cursor cursor = db.query(DB_NAME,null,null,null,null,null,null);
         if (cursor.moveToFirst()){
             do {
                 HistoryBean historyBean = new HistoryBean();
@@ -50,6 +51,7 @@ public class NewsDB {
                 historyBean.setHistory_author_name(cursor.getString(cursor.getColumnIndex("author_name")));
                 historyBean.setHistory_date(cursor.getString(cursor.getColumnIndex("date")));
                 historyBean.setHistory_url(cursor.getString(cursor.getColumnIndex("url")));
+                historyBean.setHistory_time(cursor.getLong(cursor.getColumnIndex("time")));
                 list.add(historyBean);
             }while (cursor.moveToNext());
         }

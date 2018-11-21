@@ -1,7 +1,6 @@
 package com.example.oneplus.opnew.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,34 +14,29 @@ import com.example.oneplus.opnew.bean.HistoryBean;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HistroyAdapter extends BaseAdapter {
+public class HistoryAdapter extends BaseAdapter {
 
-    private List<HistoryBean> historyBeanList;
-    private Context context;
+    private List<HistoryBean> mHistoryBeanList;
+    private Context mContext;
 
 
-    public HistroyAdapter (Context context, List<HistoryBean> historyBeanList){
-        this.context = context;
+    public HistoryAdapter (Context context, List<HistoryBean> historyBeanList){
+        this.mContext = context;
         if (historyBeanList == null){
-            this.historyBeanList = new ArrayList<>();
+            this.mHistoryBeanList = new ArrayList<>();
         }else {
-            this.historyBeanList = historyBeanList;
+            this.mHistoryBeanList = historyBeanList;
         }
-    }
-
-    public void setHistoryBeanList(List<HistoryBean> historyBeanList){
-        this.historyBeanList = historyBeanList;
-        this.notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
-        return historyBeanList.size();
+        return mHistoryBeanList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return historyBeanList.get(position);
+        return mHistoryBeanList.get(position);
     }
 
     @Override
@@ -56,7 +50,7 @@ public class HistroyAdapter extends BaseAdapter {
         View view;
         ViewHolder viewHolder;
         if (convertView == null){
-            view = LayoutInflater.from(context).inflate(R.layout.item_history,null);
+            view = LayoutInflater.from(mContext).inflate(R.layout.item_history,null);
             viewHolder = new ViewHolder();
             viewHolder.history_title = view.findViewById(R.id.history_title);
             viewHolder.history_author_name = view.findViewById(R.id.history_author_name);

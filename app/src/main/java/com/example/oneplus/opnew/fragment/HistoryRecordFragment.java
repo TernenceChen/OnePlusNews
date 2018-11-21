@@ -1,8 +1,6 @@
 package com.example.oneplus.opnew.fragment;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
@@ -16,9 +14,8 @@ import android.widget.ListView;
 
 import com.example.oneplus.opnew.NewsActivity;
 import com.example.oneplus.opnew.NewsDB;
-import com.example.oneplus.opnew.NewsHelper;
 import com.example.oneplus.opnew.R;
-import com.example.oneplus.opnew.adapter.HistroyAdapter;
+import com.example.oneplus.opnew.adapter.HistoryAdapter;
 import com.example.oneplus.opnew.bean.HistoryBean;
 
 import java.util.ArrayList;
@@ -26,14 +23,11 @@ import java.util.List;
 
 public class HistoryRecordFragment extends Fragment {
 
-    private NewsDB newsDB;
-    private SQLiteDatabase db;
-    private NewsHelper newsHelper;
-    private Toolbar toolbar;
-    private ListView listView;
-    private HistroyAdapter historyAdapter;
-    private List<String> dataList = new ArrayList<>();
-    private List<HistoryBean> historyBeanList = new ArrayList<>();
+    private NewsDB mNewsDB;
+    private Toolbar mToolbar;
+    private ListView mListView;
+    private HistoryAdapter mHistoryAdapter;
+    private List<HistoryBean> historyBeanLists = new ArrayList<>();
     private boolean isFirstLoading = true;
 
     @Override
@@ -44,15 +38,12 @@ public class HistoryRecordFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.secondfrag_layout,container,false);
-        newsHelper = new NewsHelper(getActivity(),"History",null,1);
-        db = newsHelper.getReadableDatabase();
-        toolbar = view.findViewById(R.id.toolbar_history);
-        listView = view.findViewById(R.id.history_listView);
-        newsDB = new NewsDB(getActivity());
+        mToolbar = view.findViewById(R.id.toolbar_history);
+        mListView = view.findViewById(R.id.history_listView);
+        mNewsDB = new NewsDB(getActivity());
         initData();
         initView();
-        String title = "历史记录";
-        initToolbar(toolbar,title);
+        initToolbar(mToolbar,getResources().getString(R.string.historyRecord_tab_name));
         return view;
     }
 
@@ -66,25 +57,25 @@ public class HistoryRecordFragment extends Fragment {
     }
 
     public void initData() {
-        historyBeanList = newsDB.historyBeanList();
+        historyBeanLists = mNewsDB.historyBeanList();
         List<HistoryBean> list = new ArrayList<>();
-        for(int i = historyBeanList.size() - 1; i >= 0; i--){
-            list.add(historyBeanList.get(i));
+        for(int i = historyBeanLists.size() - 1; i >= 0; i--){
+            list.add(historyBeanLists.get(i));
         }
-        historyBeanList.clear();
-        historyBeanList.addAll(list);
+        historyBeanLists.clear();
+        historyBeanLists.addAll(list);
     }
 
     public void initView(){
-        historyAdapter = new HistroyAdapter(getActivity(),historyBeanList);
-        listView.setAdapter(historyAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mHistoryAdapter = new HistoryAdapter(getActivity(),historyBeanLists);
+        mListView.setAdapter(mHistoryAdapter);
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (historyBeanList.size() <= 0) {
+                if (historyBeanLists.size() <= 0) {
                     return;
                 }
-                HistoryBean historyBean = historyBeanList.get(position);
+                HistoryBean historyBean = historyBeanLists.get(position);
                 Intent intent;
                 String url = historyBean.getHistory_url();
                 intent = new Intent(getActivity(), NewsActivity.class);

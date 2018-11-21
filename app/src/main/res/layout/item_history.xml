@@ -2,43 +2,40 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:minHeight="40dp"
-    android:padding="10dp"
+    android:minHeight="@dimen/offset_40dp"
+    android:padding="@dimen/offset_10dp"
     android:layout_height="wrap_content">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginRight="@dimen/offset_10dp"
+        android:layout_marginLeft="@dimen/offset_10dp"
         android:orientation="vertical">
         <TextView
             android:id="@+id/history_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_marginBottom="10dp"
-            android:text="Title"
-            android:textSize="16dp"
+            android:layout_marginBottom="@dimen/offset_10dp"
+            android:textSize="@dimen/font_size_normal_high"
             android:textColor="#000"/>
         <TextView
             android:id="@+id/history_author_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/history_title"
-            android:layout_marginRight="10dp"
-            android:text="author_name"
+            android:layout_marginRight="@dimen/offset_10dp"
             android:textColor="#000"
-            android:textSize="12dp"/>
+            android:textSize="@dimen/font_size_small"/>
         <TextView
             android:id="@+id/history_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/history_title"
             android:layout_toRightOf="@id/history_author_name"
-            android:layout_marginLeft="70dp"
+            android:layout_marginLeft="@dimen/offset_70dp"
             android:textColor="#000"
-            android:text="date"
-            android:textSize="12dp"/>
+            android:textSize="@dimen/font_size_small"/>
     </RelativeLayout>
 </RelativeLayout>

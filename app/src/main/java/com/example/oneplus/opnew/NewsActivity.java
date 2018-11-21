@@ -9,7 +9,7 @@ import android.webkit.WebViewClient;
 public class NewsActivity extends AppCompatActivity {
 
     private String url;
-    WebView webView;
+    WebView mWebView;
 
     @Override
     protected void onCreate( Bundle savedInstanceState) {
@@ -17,9 +17,9 @@ public class NewsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_news);
         Intent intent = getIntent();
         url = intent.getStringExtra("Url");
-        webView = findViewById(R.id.new_content);
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.setWebViewClient(new WebViewClient());
-        webView.loadUrl(url);
+        mWebView = findViewById(R.id.new_content);
+        mWebView.getSettings().setJavaScriptEnabled(true);
+        mWebView.setWebViewClient(new WebViewClient());
+        mWebView.loadUrl(url);
     }
 }

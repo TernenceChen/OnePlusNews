@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:padding="10dp"
+    android:padding="@dimen/offset_10dp"
     android:orientation="vertical">
     <RelativeLayout
         android:layout_width="match_parent"
@@ -13,31 +13,29 @@
             android:id="@+id/view_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="@dimen/offset_10dp"
             android:layout_toLeftOf="@id/news_image"
-            android:layout_marginBottom="15dp"
+            android:layout_marginBottom="@dimen/offset_15dp"
             android:textColor="#000"
-            android:textSize="16dp"
+            android:textSize="@dimen/font_size_normal_high"
             tools:text="item"/>
         <TextView
             android:id="@+id/author_name_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/view_text"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="70dp"
-            android:text="author_name"
+            android:layout_marginLeft="@dimen/offset_10dp"
+            android:layout_marginRight="@dimen/offset_70dp"
             android:textColor="#000"
-            android:textSize="12dp"/>
+            android:textSize="@dimen/font_size_small"/>
         <TextView
             android:id="@+id/date_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="date"
             android:layout_below="@id/view_text"
             android:layout_toRightOf="@id/author_name_view"
             android:textColor="#000"
-            android:textSize="12dp"/>
+            android:textSize="@dimen/font_size_small"/>
         <ImageView
             android:id="@+id/news_image"
             android:layout_width="wrap_content"

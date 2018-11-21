@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">OnePlus News</string>
     <string name="main_tab_name">首页</string>
-    <string name="history_record_name">历史记录</string>
-    <string name="add_label_name">添加</string>
+    <string name="historyRecord_tab_name">历史记录</string>
+    <string name="addLabel_tab_name">添加</string>
     <string name="quit_toast">再按一次退出</string>
 </resources>

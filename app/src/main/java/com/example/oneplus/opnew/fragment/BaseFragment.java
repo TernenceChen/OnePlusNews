@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 
 import com.example.oneplus.opnew.NewsActivity;
 import com.example.oneplus.opnew.NewsDB;
-import com.example.oneplus.opnew.NewsHelper;
 import com.example.oneplus.opnew.R;
 import com.example.oneplus.opnew.adapter.NewsAdapter;
 import com.example.oneplus.opnew.bean.HistoryBean;
@@ -37,18 +36,15 @@ public class BaseFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     public static String BASE_FRAGMENT = "base_fragment";
 
     private NewsDB newsDB;
-    private SwipeRefreshLayout swipeRefreshLayout;
-    private RecyclerView recyclerView;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
     private String mUrl;
     private String tid;
     private String pinyin;
     private View mView;
-    private NewsHelper newsHelper;
-    private NewsAdapter newsAdapter;
+    private NewsAdapter mNewsAdapter;
     private ArrayList<NewsListNormalBean.ResultBean.DataBean> mNewsListNormalBeanList = new ArrayList<>();
-
-    private int pageIndex = 0;
 
     public static BaseFragment newInstance(String type) {
         BaseFragment fragment = new BaseFragment();
@@ -67,18 +63,17 @@ public class BaseFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.basefrag_layout, null);
         newsDB = new NewsDB(getActivity());
-        newsHelper = new NewsHelper(getActivity(), "History", null, 1);
-        swipeRefreshLayout = mView.findViewById(R.id.base_swipeRefresh);
-        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary, R.color.colorTabNormal, R.color.colorLove, R.color.colorBlack);
-        swipeRefreshLayout.setOnRefreshListener(this);
-        recyclerView = mView.findViewById(R.id.base_view);
-        recyclerView.setHasFixedSize(true);
+        mSwipeRefreshLayout = mView.findViewById(R.id.base_swipeRefresh);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary, R.color.colorTabNormal, R.color.colorLove, R.color.colorBlack);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+        mRecyclerView = mView.findViewById(R.id.base_view);
+        mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        newsAdapter = new NewsAdapter(getActivity(), mNewsListNormalBeanList);
-        newsAdapter.setmOnItemClickListener(mOnItemClickListener);
-        recyclerView.setAdapter(newsAdapter);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mNewsAdapter = new NewsAdapter(getActivity(), mNewsListNormalBeanList);
+        mNewsAdapter.setmOnItemClickListener(mOnItemClickListener);
+        mRecyclerView.setAdapter(mNewsAdapter);
         onRefresh();
         return mView;
     }
@@ -87,7 +82,7 @@ public class BaseFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            swipeRefreshLayout.setRefreshing(false);
+            mSwipeRefreshLayout.setRefreshing(false);
         }
     };
 
@@ -120,7 +115,7 @@ public class BaseFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                newsAdapter.setmNewsListNormalBeanList(mNewsListNormalBeanList);
+                mNewsAdapter.setmNewsListNormalBeanList(mNewsListNormalBeanList);
             }
         });
     }
@@ -153,7 +148,7 @@ public class BaseFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    newsAdapter.setmNewsListNormalBeanList(mNewsListNormalBeanList);
+                    mNewsAdapter.setmNewsListNormalBeanList(mNewsListNormalBeanList);
                 }
             });
 
@@ -197,7 +192,6 @@ public class BaseFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     @Override
     public void onRefresh() {
-        pageIndex = 0;
         if (mNewsListNormalBeanList != null) {
             mNewsListNormalBeanList.clear();
         }
@@ -205,7 +199,7 @@ public class BaseFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             @Override
             public void run() {
                 getmUrl();
-                swipeRefreshLayout.setRefreshing(false);
+                mSwipeRefreshLayout.setRefreshing(false);
             }
         }, 1000);
     }

@@ -1,7 +1,7 @@
 package com.example.oneplus.opnew.fragment;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -22,14 +22,12 @@ import com.example.oneplus.opnew.adapter.NewsAdapter;
 import com.example.oneplus.opnew.bean.HistoryBean;
 import com.example.oneplus.opnew.bean.NewsListNormalBean;
 import com.example.oneplus.opnew.util.HttpURLConnectionUtils;
+import com.example.oneplus.opnew.util.ParseJsonUtils;
 import com.github.promeg.pinyinhelper.Pinyin;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 public class BaseFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
@@ -40,10 +38,11 @@ public class BaseFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
     private String mUrl;
-    private String tid;
-    private String pinyin;
+    private String mTid;
+    private String mPinyin;
     private View mView;
     private NewsAdapter mNewsAdapter;
+    private GetNewsFromNewTask mGetNewsFromNewTask;
     private ArrayList<NewsListNormalBean.ResultBean.DataBean> mNewsListNormalBeanList = new ArrayList<>();
 
     public static BaseFragment newInstance(String type) {
@@ -57,6 +56,13 @@ public class BaseFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     @Override
     public void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        },1000);
+        onDestroy();
     }
 
     @Override
@@ -78,84 +84,75 @@ public class BaseFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         return mView;
     }
 
-    @SuppressLint("HandlerLeak")
-    private Handler mHandler = new Handler() {
+    private final MyHandler mHandler = new MyHandler(BaseFragment.this);
+
+    private static class MyHandler extends Handler{
+        private final WeakReference<BaseFragment> mBaseFragment;
+
+        private MyHandler(BaseFragment baseFragment) {
+            mBaseFragment = new WeakReference<>(baseFragment);
+        }
+
         @Override
         public void handleMessage(Message msg) {
-            mSwipeRefreshLayout.setRefreshing(false);
+            BaseFragment fragment = mBaseFragment.get();
+            if (fragment != null){
+
+            }
         }
-    };
+    }
 
     private void getmUrl() {
         if (getArguments() != null) {
-            tid = getArguments().getString("base_fragment");
-            pinyin = Pinyin.toPinyin(tid, "");
+            mTid = getArguments().getString("base_fragment");
+
+            long start = System.currentTimeMillis();
+            mPinyin = Pinyin.toPinyin(mTid, "");
+            Log.d("Time",""+(System.currentTimeMillis() - start));
         }
-        if (pinyin.equalsIgnoreCase("TOUTIAO")) {
+        if (mPinyin.equalsIgnoreCase("TOUTIAO")) {
             mUrl = "http://v.juhe.cn/toutiao/index?type=&key=d9274c578f7955396961f9ee694112d3";
         } else {
-            mUrl = "http://v.juhe.cn/toutiao/index?type=" + pinyin + "&key=d9274c578f7955396961f9ee694112d3";
+            mUrl = "http://v.juhe.cn/toutiao/index?type=" + mPinyin + "&key=d9274c578f7955396961f9ee694112d3";
         }
-        Log.i("out-------------->", mUrl + "pinyin =" + pinyin);
-        getNewsFromNet();
+        Log.i("out-------------->", mUrl + "pinyin =" + mPinyin);
+        mGetNewsFromNewTask = new GetNewsFromNewTask();
+        mGetNewsFromNewTask.execute();
+
     }
 
-    private void getNewsFromNet() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                String response = HttpURLConnectionUtils.get(mUrl);
-                Log.i("out----------->", "GetHttp------");
-                parseJson(response);
-            }
-        }).start();
-        if (getActivity() == null) {
-            return;
+    class GetNewsFromNewTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            String response = HttpURLConnectionUtils.get(mUrl);
+            Log.i("out----------->", "GetHttp------");
+            parseJson(response);
+            return null;
         }
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mNewsAdapter.setmNewsListNormalBeanList(mNewsListNormalBeanList);
-            }
-        });
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+        }
     }
 
-    public ArrayList<NewsListNormalBean.ResultBean.DataBean> parseJson(String response) {
-
-        try {
-            JSONObject jsonObjs = new JSONObject(response).getJSONObject("result");
-            JSONArray data = jsonObjs.getJSONArray("data");
-            final int itemCounts = data.length();
-            Log.i("out---------->", "" + itemCounts);
-            List<NewsListNormalBean.ResultBean.DataBean> tempList = new ArrayList<>();
-            for (int i = 0; i < itemCounts; i++) {
-                Log.i("out----------> i = ", "" + i);
-                JSONObject jsonObj = data.getJSONObject(i);
-                NewsListNormalBean.ResultBean.DataBean dataBean = new NewsListNormalBean.ResultBean.DataBean();
-                Log.i("out---------->", jsonObj.getString("title"));
-                dataBean.setTitle(jsonObj.getString("title"));
-                Log.i("out---------->", jsonObj.getString("author_name"));
-                dataBean.setAuthor_name(jsonObj.getString("author_name"));
-                dataBean.setDate(jsonObj.getString("date"));
-                dataBean.setUrl(jsonObj.getString("url"));
-                dataBean.setThumbnail_pic_s(jsonObj.getString("thumbnail_pic_s"));
-                dataBean.setThumbnail_pic_s02(jsonObj.optString("thumbnail_pic_s02", null));
-                dataBean.setThumbnail_pic_s03(jsonObj.optString("thumbnail_pic_s03", null));
-                tempList.add(dataBean);
-
-            }
-            mNewsListNormalBeanList.addAll(tempList);
+    private void parseJson(String response){
+        ParseJsonUtils mParseJsonUtils = new ParseJsonUtils();
+        mNewsListNormalBeanList = mParseJsonUtils.parseJson(response);
+        if (getActivity() != null){
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     mNewsAdapter.setmNewsListNormalBeanList(mNewsListNormalBeanList);
                 }
             });
-
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-        return mNewsListNormalBeanList;
     }
 
     @Override
@@ -195,13 +192,13 @@ public class BaseFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         if (mNewsListNormalBeanList != null) {
             mNewsListNormalBeanList.clear();
         }
-        new Handler().postDelayed(new Runnable() {
+        mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 getmUrl();
                 mSwipeRefreshLayout.setRefreshing(false);
             }
-        }, 1000);
+        }, 0);
     }
 
     public long getNowTime(){
@@ -211,6 +208,7 @@ public class BaseFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         int month = calendar.get(Calendar.MONTH) + 1;
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         time = day + month * 100 + year * 10000;
+        Log.i("GetNowTime","" + time);
         return time;
     }
 }

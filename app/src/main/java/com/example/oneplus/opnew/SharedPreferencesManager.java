@@ -4,7 +4,7 @@ import android.content.SharedPreferences;
 
 public class SharedPreferencesManager {
 
-    public boolean addTable(SharedPreferences sharedPreferences, String key){
+    public boolean isLabelExists(SharedPreferences sharedPreferences, String key){
         return sharedPreferences.getBoolean(key,false);
     }
 

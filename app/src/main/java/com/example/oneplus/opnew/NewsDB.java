@@ -14,7 +14,7 @@ public class NewsDB {
 
     public static final String DB_NAME = "History";
     public static final int VERSION = 1;
-    private static NewsDB newsDB;
+    private static NewsDB mNewsDB;
     private SQLiteDatabase db;
 
     public NewsDB(Context context){
@@ -23,10 +23,10 @@ public class NewsDB {
     }
 
     public synchronized static NewsDB getInstance(Context context){
-        if (newsDB == null){
-            newsDB = new NewsDB(context);
+        if (mNewsDB == null){
+            mNewsDB = new NewsDB(context);
         }
-        return newsDB;
+        return mNewsDB;
     }
 
     public void saveNews (HistoryBean historyBean){

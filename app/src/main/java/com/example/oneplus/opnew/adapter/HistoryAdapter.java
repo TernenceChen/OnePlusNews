@@ -66,7 +66,7 @@ public class HistoryAdapter extends BaseAdapter {
         return view;
     }
 
-    public class ViewHolder{
+     private static class ViewHolder{
         TextView history_title;
         TextView history_author_name;
         TextView history_date;

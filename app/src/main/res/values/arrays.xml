@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="Label">
+        <item>热点</item>
+    </string-array>
+
+    <string-array name="LabelKey">
+        <item>redian</item>
+    </string-array>
+
+</resources>

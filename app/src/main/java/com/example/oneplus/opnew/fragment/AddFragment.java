@@ -22,7 +22,9 @@ public class AddFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.thirdfrag_layout,container,false);
         mToolbar = view.findViewById(R.id.toolbar_add);
-        initToolbar(mToolbar,getResources().getString(R.string.addLabel_tab_name));
+        if (isAdded()) {
+            initToolbar(mToolbar,this.getString(R.string.addLabel_tab_name));
+        }
         return view;
     }
 

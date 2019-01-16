@@ -21,7 +21,7 @@ import com.example.oneplus.opnew.bean.HistoryBean;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HistoryRecordFragment extends Fragment {
+public class HistoryRecordFragment extends Fragment implements AdapterView.OnItemClickListener {
 
     private NewsDB mNewsDB;
     private Toolbar mToolbar;
@@ -43,7 +43,9 @@ public class HistoryRecordFragment extends Fragment {
         mNewsDB = new NewsDB(getActivity());
         initData();
         initView();
-        initToolbar(mToolbar,getResources().getString(R.string.historyRecord_tab_name));
+        if (isAdded()){
+            initToolbar(mToolbar,this.getString(R.string.historyRecord_tab_name));
+        }
         return view;
     }
 
@@ -69,20 +71,21 @@ public class HistoryRecordFragment extends Fragment {
     public void initView(){
         mHistoryAdapter = new HistoryAdapter(getActivity(),historyBeanLists);
         mListView.setAdapter(mHistoryAdapter);
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (historyBeanLists.size() <= 0) {
-                    return;
-                }
-                HistoryBean historyBean = historyBeanLists.get(position);
-                Intent intent;
-                String url = historyBean.getHistory_url();
-                intent = new Intent(getActivity(), NewsActivity.class);
-                intent.putExtra("Url", url);
-                getActivity().startActivity(intent);
-            }
-        });
+        mListView.setOnItemClickListener(this);
+     }
+
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if (historyBeanLists.size() <= 0) {
+            return;
+        }
+        HistoryBean historyBean = historyBeanLists.get(position);
+        Intent intent;
+        String url = historyBean.getHistory_url();
+        intent = new Intent(getActivity(), NewsActivity.class);
+        intent.putExtra("Url", url);
+        getActivity().startActivity(intent);
     }
 
     @Override

@@ -4,4 +4,9 @@
     <string name="historyRecord_tab_name">历史记录</string>
     <string name="addLabel_tab_name">添加</string>
     <string name="quit_toast">再按一次退出</string>
+    <string name="table_military">军事</string>
+    <string name="table_technology">科技</string>
+    <string name="table_finance">财经</string>
+    <string name="table_fashion">时尚</string>
+    <string name="table_main">头条</string>
 </resources>

@@ -23,10 +23,17 @@ public class MainActivity extends AppCompatActivity {
     private GetLastTimeUtils mGetLastTimeUtils;
     private DatabaseTask mDatabaseTask;
 
+    static {
+        System.loadLibrary("native-lib");
+    }
+
+    public native String stringFromJNI();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toast.makeText(this, stringFromJNI(), Toast.LENGTH_LONG).show();
         initView();
         mDatabaseTask = new DatabaseTask();
         mDatabaseTask.execute();
